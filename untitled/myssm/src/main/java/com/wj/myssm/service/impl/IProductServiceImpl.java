@@ -19,6 +19,7 @@ public class IProductServiceImpl implements IProductService {
     public void save(Product product) {
         //生成UUID
         product.setId(CreateUUIDUtils.createID());
+        System.out.println("save()"+product.toString());
         productDao.save(product);
     }
 
