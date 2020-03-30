@@ -63,6 +63,12 @@ public class UserInfo implements Serializable {
     }
 
     public String getStatusStr() {
+        //status 0未开启 1开启
+        if(status==0) {
+            statusStr="未开启";
+        }else if(status==1) {
+            statusStr="开启";
+        }
         return statusStr;
     }
 

@@ -1,9 +1,11 @@
 package com.wj.myssm.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.wj.myssm.entity.Product;
 import com.wj.myssm.service.IProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -37,10 +39,14 @@ public class ProductController {
      * 查询所有商品信息
      */
     @RequestMapping("/findAll.do")
-    public ModelAndView findAll() throws Exception{
-        List<Product> list = productService.findAll();
+    public ModelAndView findAll(
+            @RequestParam(name = "page",required = true,defaultValue = "1") int page,
+            @RequestParam(name = "size",required = true,defaultValue = "2") int size
+    ) throws Exception{
+        List<Product> list = productService.findAll(page,size);
+        PageInfo<Product> pageInfo = new PageInfo<Product>(list);
         ModelAndView m = new ModelAndView();
-        m.addObject("productList",list);
+        m.addObject("pageInfo",pageInfo);
         m.setViewName("product-list");
         return m;
     }

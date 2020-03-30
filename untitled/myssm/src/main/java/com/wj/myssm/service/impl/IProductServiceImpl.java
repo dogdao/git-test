@@ -1,5 +1,6 @@
 package com.wj.myssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wj.myssm.dao.IProductDao;
 import com.wj.myssm.entity.Product;
 import com.wj.myssm.service.IProductService;
@@ -24,7 +25,8 @@ public class IProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> findAll() throws Exception {
+    public List<Product> findAll(int page,int size) throws Exception {
+        PageHelper.startPage(page,size);
         return productDao.findAll();
     }
 }

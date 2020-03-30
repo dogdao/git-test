@@ -1,15 +1,36 @@
 package com.wj.myssm.dao;
 
 import com.wj.myssm.entity.UserInfo;
-import org.apache.ibatis.annotations.Many;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("userDao")
 public interface IUserDao {
 
+    //根据id查找用户
+    @Select("select * from users where id = #{id}")
+    @Results({@Result(id = true,property = "id",column = "id"),
+              @Result(property = "email",column = "email"),
+              @Result(property = "username",column = "username"),
+              @Result(property = "password",column = "password"),
+              @Result(property = "phoneNum",column = "phoneNum"),
+              @Result(property = "status",column = "status"),
+              @Result(property = "roles",column = "id",javaType = java.util.List.class,
+              many = @Many(select = "com.wj.myssm.dao.IRoleDao.findRoleByUserId"))})
+    UserInfo findById(String id) throws Exception;
+
+    //添加用户信息
+    @Insert("Insert into users (id,email,username,password,phoneNum,status) " +
+            "Values(#{id},#{email},#{username},#{password},#{phoneNum},#{status})")
+    int save(UserInfo userInfo) throws Exception;
+
+    //查询所有用户信息
+    @Select("select * from users")
+    List<UserInfo> findAll() throws Exception;
+
+    //根据用户名查询用户信息
     @Select("select * from users where username = #{username}")
     @Results({@Result(id=true,property = "id",column = "id"),
             @Result(property = "email" ,column = "email"),
