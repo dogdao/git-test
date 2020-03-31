@@ -88,7 +88,7 @@
 					href="${pageContext.request.contextPath}/user/findAll.do">用户管理</a></li>
 
 				<li class="active">全部用户</li>
-			</ol>
+			</ol>+
 			</section>
 			<!-- 内容头部 /-->
 

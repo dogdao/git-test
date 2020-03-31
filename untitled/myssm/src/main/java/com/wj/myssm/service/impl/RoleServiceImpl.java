@@ -14,6 +14,13 @@ public class RoleServiceImpl implements IRoleService {
     private IRoleDao roleDao;
 
     @Override
+    public void deleteRoleById(String roleId) throws Exception {
+        roleDao.deleteRole_PermissionByRoleId(roleId);
+        roleDao.deleteUsers_RoleByRoleId(roleId);
+        roleDao.deleteRoleById(roleId);
+    }
+
+    @Override
     public void save(Role role) throws Exception {
         role.setId(CreateUUIDUtils.createID());
         roleDao.save(role);

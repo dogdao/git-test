@@ -1,6 +1,7 @@
 package com.wj.myssm.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.wj.myssm.entity.Role;
 import com.wj.myssm.entity.UserInfo;
 import com.wj.myssm.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,29 @@ import java.util.List;
 public class UsersControllelr {
     @Autowired
     private IUserService userService;
+
+    //为用户添加角色
+    @RequestMapping("/addRoleToUser.do")
+    public String addRoleToUser(
+            @RequestParam(name = "userId", required = true) String userId,
+            @RequestParam(name = "ids", required = true) String[] roleId) throws Exception {
+        userService.addRoleToUser(userId,roleId);
+        return "redirect:findAll.do";
+    }
+
+    //找到用户的角色并找到用户可以添加的角色
+    @RequestMapping("/findUserByIdAndAllRole.do")
+    public ModelAndView findUserByIdAndAllRole(String id) throws Exception {
+        ModelAndView m = new ModelAndView();
+        //1.查找用户
+        UserInfo userInfo = userService.findById(id);
+        //根据用户信息可以查询用户可以额外添加的角色
+        List<Role> roles = userService.findOtherRoles(id);
+        m.addObject("user",userInfo);
+        m.addObject("roleList",roles);
+        m.setViewName("user-role-add");
+        return m;
+    }
 
     //显示用户详情
     @RequestMapping("/findById.do")
@@ -47,5 +71,4 @@ public class UsersControllelr {
         m.setViewName("user-list");
         return m;
     }
-
 }

@@ -5,6 +5,7 @@ import com.wj.myssm.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -14,6 +15,21 @@ import java.util.List;
 public class RoleController {
     @Autowired
     private IRoleService roleService;
+
+    /**
+     *
+     * @param roleId
+     * @return java.lang.String
+     * @author daodao
+     * @date 2020/3/31 11:33
+     * 删除角色信息
+     */
+    @RequestMapping("/deleteRole.do")
+    public String deleteRoleById(
+            @RequestParam(name = "roleId",required = true) String roleId) throws Exception {
+        roleService.deleteRoleById(roleId);
+        return "redirect:findAll.do";
+    }
 
 
      /**

@@ -1,5 +1,6 @@
 package com.wj.myssm.dao;
 
+import com.wj.myssm.entity.Role;
 import com.wj.myssm.entity.UserInfo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,14 @@ import java.util.List;
 
 @Repository("userDao")
 public interface IUserDao {
+
+    //保存新增角色信息
+    @Insert("insert into users_role (userId,roleId) values (#{userId},#{roleId})")
+    void addRoleToUser(@Param("userId") String userId,@Param("roleId") String roleId) throws Exception;
+
+    //查询用户可以添加的角色
+    @Select("select * from role where id not in (select roleId from users_role where userId = #{userId})")
+    List<Role> findOtherRoles(String userId) throws Exception;
 
     //根据id查找用户
     @Select("select * from users where id = #{id}")
