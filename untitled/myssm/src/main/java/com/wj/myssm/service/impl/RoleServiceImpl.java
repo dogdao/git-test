@@ -1,6 +1,7 @@
 package com.wj.myssm.service.impl;
 
 import com.wj.myssm.dao.IRoleDao;
+import com.wj.myssm.entity.Permission;
 import com.wj.myssm.entity.Role;
 import com.wj.myssm.service.IRoleService;
 import com.wj.myssm.utils.CreateUUIDUtils;
@@ -9,9 +10,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service("roleService")
+
 public class RoleServiceImpl implements IRoleService {
     @Autowired
     private IRoleDao roleDao;
+
+    @Override
+    public void addPermissionToRole(String roleId, String[] permissionIds) throws Exception {
+        for(String permissionId:permissionIds) {
+            System.out.println("<<<roleId:"+roleId+", permissionId"+permissionId);
+            roleDao.addPermissionToRole(roleId,permissionId);
+        }
+    }
+
+    @Override
+    public List<Permission> findOtherPermissions(String roleId) throws Exception {
+        return roleDao.findOtherPermissions(roleId);
+    }
+
+    @Override
+    public Role findById(String roleId) throws Exception {
+        return roleDao.findById(roleId);
+    }
 
     @Override
     public void deleteRoleById(String roleId) throws Exception {

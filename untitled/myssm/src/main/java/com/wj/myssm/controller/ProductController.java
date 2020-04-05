@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
@@ -39,9 +40,10 @@ public class ProductController {
      * 查询所有商品信息
      */
     @RequestMapping("/findAll.do")
+    @RolesAllowed("ADMIN")//只有admin角色才可以访问
     public ModelAndView findAll(
-            @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-            @RequestParam(name = "size",required = true,defaultValue = "2") int size
+            @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
+            @RequestParam(name = "size",required = true,defaultValue = "2") Integer size
     ) throws Exception{
         List<Product> list = productService.findAll(page,size);
         PageInfo<Product> pageInfo = new PageInfo<Product>(list);

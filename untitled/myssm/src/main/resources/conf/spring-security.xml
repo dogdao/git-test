@@ -6,6 +6,11 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--开启JSR250注解
+    <security:global-method-security jsr250-annotations="enabled"></security:global-method-security>
+    -->
+    <!--开启secured注解-->
+    <security:global-method-security secured-annotations="enabled"></security:global-method-security>
 
     <!-- 配置不拦截的资源 -->
     <security:http pattern="/login.jsp" security="none"/>
@@ -40,22 +45,11 @@
     <!-- 切换成数据库中的用户名和密码 -->
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userService">
-            <!-- 配置加密的方式
-            <security:password-encoder ref="passwordEncoder"/>-->
+            <!-- 配置加密的方式-->
+            <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
 
     <!-- 配置加密类 -->
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-
-    <!-- 提供了入门的方式，在内存中存入用户名和密码
-    <security:authentication-manager>
-    	<security:authentication-provider>
-    		<security:user-service>
-    			<security:user name="admin" password="{noop}admin" authorities="ROLE_USER"/>
-    		</security:user-service>
-    	</security:authentication-provider>
-    </security:authentication-manager>
-    -->
-
 </beans>

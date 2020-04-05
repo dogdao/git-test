@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class IOrdersServiceImpl implements IOrdersService {
+public class OrdersServiceImpl implements IOrdersService {
     @Resource
     private IOrdersDao iOrdersDao;
 

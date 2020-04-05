@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service("iProductService")
-public class IProductServiceImpl implements IProductService {
+public class ProductServiceImpl implements IProductService {
     @Resource
     private IProductDao productDao;
 

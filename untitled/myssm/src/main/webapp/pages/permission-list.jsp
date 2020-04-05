@@ -151,7 +151,7 @@
 											<td>${permission.url }</td>
 											<td class="text-center">
 												<a href="${pageContext.request.contextPath}/permission/findById.do?id=${permission.id}" class="btn bg-olive btn-xs">详情</a>
-												<a href="${pageContext.request.contextPath}/user/findUserByIdAndAllpermission.do?id=${user.id}" class="btn bg-olive btn-xs">添加资源权限</a>
+												<a href="${pageContext.request.contextPath}/user/findUserByIdAndAllpermission.do?id=${role.id}" class="btn bg-olive btn-xs">添加资源权限</a>
 											</td>
 										</tr>
 									</c:forEach>

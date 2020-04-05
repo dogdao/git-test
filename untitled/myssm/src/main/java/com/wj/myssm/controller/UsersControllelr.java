@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
@@ -61,8 +62,8 @@ public class UsersControllelr {
 
     //分页查询所有用户
     @RequestMapping("/findAll.do")
-    public ModelAndView findAll(@RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                                @RequestParam(name = "size",required = true,defaultValue = "4") int size) throws Exception {
+    public ModelAndView findAll(@RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
+                                @RequestParam(name = "size",required = true,defaultValue = "4") Integer size) throws Exception {
         ModelAndView m = new ModelAndView();
         List<UserInfo> users = userService.findAll(page,size);
         PageInfo<UserInfo> userInfo = new PageInfo<UserInfo>(users);

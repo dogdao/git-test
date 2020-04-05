@@ -11,11 +11,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserDao userDao;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,15 +35,22 @@ public class UserServiceImpl implements IUserService {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println("<<<<<"+userInfo.toString());
         //处理自己的用户对象封装成UserDetails
-        User user = new User(userInfo.getUsername(),"{noop}"+userInfo.getPassword(),userInfo.getStatus()==0?false:true,true,true,true,getAuthorities(userInfo.getRoles()));
+        User user = new User(userInfo.getUsername(),userInfo.getPassword(),
+                userInfo.getStatus()==0?false:true,true,
+                true,true,
+                getAuthorities(userInfo.getRoles()));
+        System.out.println(">>>>"+user.toString()+user.getPassword());
         return user;
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(List<Role> roles){
-        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+        List<SimpleGrantedAuthority> authorities =
+                new ArrayList<SimpleGrantedAuthority>();
         for(Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
+            authorities.add(new SimpleGrantedAuthority(
+                    "ROLE_"+role.getRoleName()));
         }
         return authorities;
     }
@@ -63,7 +70,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserInfo findById(String id) throws Exception {
         UserInfo userInfo = userDao.findById(id);
-        System.out.println("<<<"+userInfo.getRoles().get(0).toString());
         return userInfo;
     }
 
@@ -86,7 +92,7 @@ public class UserServiceImpl implements IUserService {
         //创建一个UUID
         userInfo.setId(CreateUUIDUtils.createID());
         //给密码加密
-        userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+        userInfo.setPassword(bCryptPasswordEncoder.encode(userInfo.getPassword()));
         return userDao.save(userInfo);
     }
 }
